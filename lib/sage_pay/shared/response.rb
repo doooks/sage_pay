@@ -1,5 +1,5 @@
 module SagePay
-  module Server
+  module Shared
     class Response
       class_inheritable_hash :key_converter, :value_converter, :match_converter, :instance_writer => false
 

@@ -1,6 +1,6 @@
 module SagePay
   module Server
-    class RepeatResponse < Response
+    class RepeatResponse < SagePay::Shared::Response
       attr_accessor_if_ok :vps_tx_id, :tx_auth_no, :security_key,
         :avs_cv2, :address_result, :post_code_result, :cv2_result
 

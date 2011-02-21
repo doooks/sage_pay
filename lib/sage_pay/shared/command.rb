@@ -1,6 +1,7 @@
 module SagePay
   module Shared
     class Command
+
       include Validatable
 
       class_inheritable_accessor :tx_type, :vps_protocol

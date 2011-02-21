@@ -9,8 +9,7 @@ module SagePay
 
       attr_accessor :mode, :vendor, :vendor_tx_code
 
-      validates_presence_of :vps_protocol, :mode, :tx_type, :vendor,
-        :vendor_tx_code
+      validates_presence_of :vps_protocol, :mode, :tx_type, :vendor, :vendor_tx_code
 
       validates_length_of :vps_protocol,     :is      => 4
       validates_length_of :vendor,           :maximum => 15
@@ -45,18 +44,6 @@ module SagePay
         raise NotImplementedError, "Subclass of command implement simulator_service with tail of the URL used for that command in the simulator."
       end
 
-      def url
-        case mode
-        when :simulator
-          "https://test.sagepay.com/simulator/VSPServerGateway.asp?Service=#{simulator_service}"
-        when :test
-          "https://test.sagepay.com/gateway/service/#{live_service}.vsp"
-        when :live
-          "https://live.sagepay.com/gateway/service/#{live_service}.vsp"
-        else
-          raise ArgumentError, "Invalid transaction mode"
-        end
-      end
 
       def post_params
         raise ArgumentError, "Invalid transaction registration options (see errors hash for details)" unless valid?
@@ -72,16 +59,27 @@ module SagePay
       def response_from_response_body(response_body)
         Response.from_response_body(response_body)
       end
-
+ 
       private
+
       def post
+
+        puts("IN COMMAND POST")
+
         parsed_uri = URI.parse(url)
+
+        puts("URI:#{parsed_uri}")
+
         request = Net::HTTP::Post.new(parsed_uri.request_uri)
         request.form_data = post_params
+
+        puts("POST PARAMS:#{post_params}")
+        puts("FORM_DATA:#{request.to_hash}")
 
         http = Net::HTTP.new(parsed_uri.host, parsed_uri.port)
         http.use_ssl = true if parsed_uri.scheme == "https"
         http.start { |http|
+          puts("POSTING:#{request.to_s}")
           http.request(request)
         }
       end

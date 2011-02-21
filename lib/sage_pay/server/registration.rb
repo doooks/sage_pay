@@ -8,6 +8,8 @@ module SagePay
       
       validates_length_of :notification_url, :maximum => 255
 
+      validates_inclusion_of :profile,           :allow_blank => true, :in => [:normal, :low]
+
       def live_service
         "vspserver-register"
       end
@@ -20,6 +22,7 @@ module SagePay
         
         params = super.merge(shared_registration_params)
         params["NotificationURL"]  = notification_url
+        params['Profile']          = profile.to_s.upcase  if profile.present?
         params
       end
 

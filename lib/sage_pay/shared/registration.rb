@@ -17,7 +17,7 @@ module SagePay
       validates_inclusion_of :allow_gift_aid,    :allow_blank => true, :in => [ true, false ]
       validates_inclusion_of :apply_avs_cv2,     :allow_blank => true, :in => (0..3).to_a
       validates_inclusion_of :apply_3d_secure,   :allow_blank => true, :in => (0..3).to_a
-      validates_inclusion_of :profile,           :allow_blank => true, :in => [:normal, :low]
+
       validates_inclusion_of :billing_agreement, :allow_blank => true, :in => [true, false]
       validates_inclusion_of :account_type,      :allow_blank => true, :in => [:ecommerce, :continuous_authority, :mail_order]
 
@@ -25,6 +25,7 @@ module SagePay
       validates_true_for :amount, :key => :amount_maximum_value, :logic => lambda { amount.nil? || amount <= BigDecimal.new("100000") }, :message => "is greater than the maximum value (100,000.00)"
 
       def run!
+
         if @response.nil? || (@vendor_tx_code_sent != vendor_tx_code)
           @vendor_tx_code_sent = vendor_tx_code
           @response = handle_response(post)
@@ -75,7 +76,7 @@ module SagePay
         params['AllowGiftAid']     = allow_gift_aid ? "1" : "0"    if allow_gift_aid.present? || allow_gift_aid == false
         params['ApplyAVSCV2']      = apply_avs_cv2.to_s            if apply_avs_cv2.present?
         params['Apply3DSecure']    = apply_3d_secure.to_s          if apply_3d_secure.present?
-        params['Profile']          = profile.to_s.upcase           if profile.present?
+
         params['BillingAgreement'] = billing_agreement ? "1" : "0" if billing_agreement.present? || billing_agreement == false
         params['AccountType']      = account_type_param            if account_type.present?
 

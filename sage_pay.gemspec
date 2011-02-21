@@ -77,12 +77,12 @@ gateway for accepting credit card payments through your web app.
     lib/sage_pay/server/release.rb
     lib/sage_pay/server/repeat.rb
     lib/sage_pay/server/repeat_response.rb
-    lib/sage_pay/server/response.rb
     lib/sage_pay/server/signature_verification_details.rb
     lib/sage_pay/server/transaction_code.rb
     lib/sage_pay/shared/command.rb
     lib/sage_pay/shared/registration.rb
     lib/sage_pay/shared/registration_response.rb
+    lib/sage_pay/shared/response.rb
     lib/sage_pay/uri_fixups.rb
     lib/validatable-ext.rb
     lib/validations/validates_inclusion_of.rb

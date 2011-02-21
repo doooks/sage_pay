@@ -24,13 +24,35 @@ module SagePay
     end
 
     def self.registration(attributes)
+      
+      puts("default_registration_options are:#{default_registration_options}")
+
       defaults = {
         # should probably move Transaction code up to shared?
         :vendor_tx_code   => SagePay::Server::TransactionCode.random,
         :delivery_address => attributes[:billing_address]
       }.merge(default_registration_options)
+      
+      test_data = {
+        :card_holder => "Mr Plough",
+        :card_number => "1111222233334444",
+        :expiry_date => "0512",
+        :cvv => "123",
+        :card_type => "VISA",
+        :client_ip_address => "192.168.123.123"
+      }
+      
+      defaults = defaults.merge(test_data)
 
-      SagePay::Direct::Registration.new(defaults.merge(attributes))
+      reg = SagePay::Direct::Registration.new(defaults.merge(attributes))
+      
+      unless reg.valid?
+
+        puts("REG VALIDATION ERRORS")
+        reg.errors.full_messages.map {|s| puts(s) }
+      end
+      
+      reg
     end
 
   end

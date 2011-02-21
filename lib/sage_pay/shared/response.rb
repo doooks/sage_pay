@@ -11,6 +11,7 @@ module SagePay
 
       self.value_converter = {
         :status => {
+          "REGISTERED"=> :registered,
           "OK"        => :ok,
           "MALFORMED" => :malformed,
           "INVALID"   => :invalid,
@@ -30,10 +31,10 @@ module SagePay
       def self.attr_accessor_if_ok(*attrs)
         attrs.each do |attr|
           define_method(attr) do
-            if ok?
+            if ok? or registered?
               instance_variable_get("@#{attr}")
             else
-              raise RuntimeError, "Unable to retrieve #{attr} as the status was #{status} (not OK)."
+              raise RuntimeError, "Unable to retrieve #{attr} as the status was #{status} (not OK or REGISTERED)."
             end
           end
         end
@@ -45,15 +46,18 @@ module SagePay
         response_body.each_line do |line|
           key, value = line.split('=', 2)
           unless key.nil? || value.nil?
+            puts("before conversion: key:#{key} value:#{value}")
             value = value.chomp
 
             converted_key = key_converter[key]
             converted_value = value_converter[converted_key].nil? ? value : value_converter[converted_key][value]
 
             attributes[converted_key] = converted_value
+
+            puts("setting #{converted_key} to #{converted_value}")
           end
         end
-
+        
         new(attributes)
       end
 
@@ -84,6 +88,11 @@ module SagePay
       def error?
         status == :error
       end
+      
+      def registered?
+        status == :registered
+      end
+
     end
   end
 end

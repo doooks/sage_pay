@@ -61,6 +61,7 @@ gateway for accepting credit card payments through your web app.
     lib/sage_pay/direct.rb
     lib/sage_pay/direct/command.rb
     lib/sage_pay/direct/registration.rb
+    lib/sage_pay/direct/registration_response.rb
     lib/sage_pay/server.rb
     lib/sage_pay/server/abort.rb
     lib/sage_pay/server/address.rb
@@ -81,7 +82,6 @@ gateway for accepting credit card payments through your web app.
     lib/sage_pay/server/transaction_code.rb
     lib/sage_pay/shared/command.rb
     lib/sage_pay/shared/registration.rb
-    lib/sage_pay/shared/registration_response.rb
     lib/sage_pay/shared/response.rb
     lib/sage_pay/uri_fixups.rb
     lib/validatable-ext.rb

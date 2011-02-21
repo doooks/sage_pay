@@ -46,6 +46,11 @@ module SagePay
 
         params
       end
+
+      def response_from_response_body(response_body)
+        RegistrationResponse.from_response_body(response_body)
+      end
+
       
     end
   end

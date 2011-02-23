@@ -7,7 +7,7 @@ require 'md5'
 require 'uuid'
 
 module SagePay
-  VERSION = '0.2.13.doooks'
+  VERSION = '0.2.14.doooks'
 end
 
 require 'validatable-ext'

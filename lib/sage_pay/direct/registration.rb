@@ -6,7 +6,6 @@ module SagePay
       
       validates_length_of :card_holder, :maximum => 50
       validates_length_of :card_number, :within => 12..20
-      validates_length_of :start_date, :is => 4, :allow_nil => true
       validates_length_of :expiry_date, :is => 4
       validates_length_of :cvv, :maximum => 4
       validates_length_of :client_ip_address, :maximum => 15
@@ -17,7 +16,6 @@ module SagePay
       validates_format_of :issue_number, :with => /^\d{2}$/, :if => Proc.new{ |r| r.issue_number && !r.issue_number.empty? }
       validates_format_of :client_ip_address, :with => /^[0-9\.]+$/, :if => Proc.new { |r| r.client_ip_address && !r.client_ip_address.empty?}
       
-
       validates_inclusion_of :card_type, :in => %w(VISA MC DELTA SOLO MAESTRO UKE AMEX DC JCB LASER PAYPAL)
       
       def url
@@ -38,9 +36,9 @@ module SagePay
         params = super.merge(shared_registration_params)
         params["CardHolder"] = card_holder
         params["CardNumber"] = card_number
-        params["StartDate"] = start_date
+        params["StartDate"] = start_date if start_date.present?
         params["ExpiryDate"] = expiry_date
-        params["IssueNumber"] = issue_number
+        params["IssueNumber"] = issue_number if issue_number.present?
         params["CV2"] = cvv
         params["CardType"] = card_type
 
@@ -50,7 +48,6 @@ module SagePay
       def response_from_response_body(response_body)
         RegistrationResponse.from_response_body(response_body)
       end
-
       
     end
   end
